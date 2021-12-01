@@ -5,7 +5,6 @@ using UnityEngine;
 public class Card : MonoBehaviour
 {
     public GameObject[] cardBases;
-    private CardOverlay cardOverlay;
     private float rotate = -90.0f;
 
     void Start()

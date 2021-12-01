@@ -11,7 +11,6 @@ public class GenerateHand : MonoBehaviour
         for(int i = 0; i < 5; i++)
         {
             card.generateCard(i*6);
-            Debug.Log("Generating Hand");
         }
     }
 }

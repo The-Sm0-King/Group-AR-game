@@ -8,15 +8,14 @@ public class CardOverlay : MonoBehaviour
 {
     public TextMeshProUGUI text;
     public TextMeshProUGUI element;
+    public GameManager gameManager;
     //public TextMeshProUGUI Name;
-    GameObject confirmCanvas;
 
     // Start is called before the first frame update
     void Start()
     {
-        confirmCanvas = GameObject.FindGameObjectWithTag("ConfirmCanvas");
         GenerateNumber();
-        //GenerateElement();
+        gameManager = GameObject.FindObjectOfType<GameManager>();
     }
 
     public void GenerateNumber()
@@ -24,32 +23,26 @@ public class CardOverlay : MonoBehaviour
         PickRandomNumber(10);
     }
 
-    private void PickRandomNumber(int maxInt)
+    public void PickRandomNumber(int maxInt)
     {
         int randomNum = Random.Range(1, maxInt + 1);
         text.text = randomNum.ToString();
+        StartCoroutine(PullInfo());
     }
 
-    private void OnMouseDown()
+    public void OnMouseDown()
     {
-        //confirmCanvas = GameObject.FindGameObjectWithTag("ConfirmCanvas");
-        confirmCanvas.transform.Find("Confirm").gameObject.SetActive(true);
-        confirmCanvas.transform.Find("Cancel").gameObject.SetActive(true);
-        //Debug.Log(Input.mousePosition);
-        //string num = GetComponent<Text>().text;
-        //Debug.Log("Number:" + text.text);
-        //Debug.Log("Element:" + element.text);
+        gameManager.showConfirm(text.text, element.text);
     }
 
-    public void confirmSelection()
+    IEnumerator PullInfo()
     {
-        Debug.Log("Number:" + text.text);
-        Debug.Log("Element:" + element.text);
+        //it cant find gameManager until a second after load
+        yield return new WaitForSeconds(1);
+        if (!gameManager.startOfGame)
+        {
+            gameManager.saveEnemyInfo(text.text, element.text);
+        }
+        
     }
-
-    public void cancelSelection()
-    {
-        confirmCanvas.SetActive(false);
-    }
-
 }
